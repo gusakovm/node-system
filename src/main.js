@@ -165,3 +165,7 @@ const EnvMain = {
 };
 
 window.EnvMain = EnvMain;
+
+window.addEventListener('load', () => {
+    window.EnvMain.exec();
+});
