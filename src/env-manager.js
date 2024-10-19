@@ -89,19 +89,24 @@ const EnvManager = {
                 envVarDiv.className = 'mb-2 p-2 bg-dark-200 rounded-md hover:bg-dark-100 transition-colors duration-200';
                 envVarDiv.innerHTML = `
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-gray-200">${envVar.key}</span>
+                        <span class="font-bold text-gray-200 cursor-pointer" data-copy="${envVar.key}">${envVar.key}</span>
                         <button class="edit-btn text-blue-400 hover:text-blue-300">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                             </svg>
                         </button>
                     </div>
-                    <div class="text-gray-300">${envVar.value}</div>
+                    <div class="text-gray-300 cursor-pointer" data-copy="${envVar.value}">${envVar.value}</div>
                     ${envVar.description ? `<div class="text-sm text-gray-400">${envVar.description}</div>` : ''}
                 `;
                 
                 const editBtn = envVarDiv.querySelector('.edit-btn');
                 editBtn.addEventListener('click', () => this.showEditForm(envVar));
+                
+                const copyElements = envVarDiv.querySelectorAll('[data-copy]');
+                copyElements.forEach(el => {
+                    el.addEventListener('click', () => this.copyToClipboard(el.getAttribute('data-copy')));
+                });
                 
                 categoryContent.appendChild(envVarDiv);
             });
@@ -353,6 +358,19 @@ const EnvManager = {
                 this.showMessage(-1, 'An error occurred while saving');
             }
         }
+    },
+
+    copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            if (this.showMessage) {
+                this.showMessage(1, 'Скопировано');
+            }
+        }).catch(err => {
+            console.error('Ошибка при копировании: ', err);
+            if (this.showMessage) {
+                this.showMessage(-1, 'Ошибка при копировании');
+            }
+        });
     }
 };
 

@@ -5,6 +5,8 @@ const path = require('path');
 
 const deployUrl = process.env.DEPLOY_URL;
 const nodeAppToken = process.env.NODE_APP_TOKEN;
+const uploadFileName = process.env.UPLOAD_FILE_NAME || 'index.html';
+const uploadFilePath = process.env.UPLOAD_FILE_PATH || '';
 
 if (!deployUrl) {
   console.error('Ошибка: DEPLOY_URL не установлен в .env файле');
@@ -27,7 +29,9 @@ function deployFile() {
     headers: {
       'Content-Type': 'text/html',
       'Content-Length': fileContent.length,
-      'nodeAPPToken': nodeAppToken
+      'nodeAPPToken': nodeAppToken,
+      'x-upload-filename': uploadFileName,
+      'x-upload-filepath': uploadFilePath
     }
   };
 
