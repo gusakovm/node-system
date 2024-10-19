@@ -31,4 +31,10 @@ module.exports = {
     compress: true,
     port: 9000,
   },
+  watch: true,
+  watchOptions: {
+    ignored: /node_modules/,
+    aggregateTimeout: 300,
+    poll: 1000,
+  },
 };
